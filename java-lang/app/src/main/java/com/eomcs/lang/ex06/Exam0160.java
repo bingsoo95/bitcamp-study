@@ -11,7 +11,7 @@ public class Exam0160 {
     int age = keyScan.nextInt();
 
     if (age < 8)
-      System.out.println("아동입니다.");
+      System.out.println("아동입니다."); 
     else {
       if (age < 14)
         System.out.println("어린이입니다.");
