@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>라면 정보</title>
+</head>
+<body>
+<h1>새 제품</h1>
+
+<form>
+제품명*: <input id="x-name" type="text"><br>
+중량(g): <input id="x-gram" type="text"><br>
+칼로리(kcal): <input id="x-kcal" type="text"><br>
+제조사: <input id="x-brand" type="text"><br>
+가격(원): <input id="x-price" type="text"><br>
+별표(*) 항목은 필수 입력입니다.<br>
+<button id="x-add-btn" type="button">등록</button>
+<button id="x-cancel-btn" type="button">취소</button>
+</form>
+
+<script type="text/javascript">
+    var xName = document.querySelector("#x-name");
+    var xGram = document.querySelector("#x-gram");
+    var xKcal = document.querySelector("#x-kcal");
+    var xBrand = document.querySelector("#x-brand");
+    var xPrice = document.querySelector("#x-price");
+
+    document.querySelector("#x-add-btn").onclick = function() {
+      if (xName.value == "") {
+        window.alert("필수 입력 항목이 비어 있습니다.");
+        return;
+      }
+
+    fetch(`/my1/add?name=${xName.value}&gram=${xGram.value}&kcal=${xKcal.value}&brand=${xBrand.value}&price=${xPrice.value}`)
+      .then(function(response) {
+        return response.text();
+      })
+      .then(function(text) {
+        console.log(text);
+        location.href = "index.html";
+      });
+  };
+
+  document.querySelector("#x-cancel-btn").onclick = function() {
+    window.location.href = "index.html";
+  };
+</script>
+</body>
+</html>

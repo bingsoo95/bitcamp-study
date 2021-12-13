@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>라면 정보</title>
+</head>
+<body>
+
+<h1>라면 상세정보</h1>
+
+<form>
+제품명*: <input id="x-name" type="text" readonly><br>
+중량(g): <input id="x-gram" type="text"><br>
+칼로리(kcal): <input id="x-kcal" type="text"><br>
+제조사: <input id="x-brand" type="text"><br>
+가격(원): <input id="x-price" type="text"><br>
+별표(*) 항목은 필수 입력입니다.<br>
+<button id="x-update-btn" type="button">변경</button>
+<button id="x-delete-btn" type="button">삭제</button>
+<button id="x-cancel-btn" type="button">취소</button>
+</form>
+
+<script type="text/javascript">
+
+    var arr = location.href.split("?");
+    console.log(arr);
+
+    if (arr.length == 1) {
+      alert("요청 형식이 옳바르지 않습니다.")
+      throw "URL 형식 오류!";
+    }
+
+    var qs = arr[1];
+    console.log(qs);
+
+    var params = new URLSearchParams(qs);
+    var name = params.get("name");
+
+    if (name == null) {
+      alert("제품명 값이 없습니다.");
+      throw "파라미터 오류!";
+    }
+    console.log(name);
+
+    var xName = document.querySelector("#x-name");
+    var xGram = document.querySelector("#x-gram");
+    var xKcal = document.querySelector("#x-kcal");
+    var xBrand = document.querySelector("#x-brand");
+    var xPrice = document.querySelector("#x-price");
+
+    fetch(`/my1/get?name=${name}`)
+      .then(function(response) {
+        return response.text();
+      })
+      .then(function(contact) {
+        var values = contact.split(",");
+
+        xName.value = values[0];
+        xGram.value = values[1];
+        xKcal.value = values[2];
+        xBrand.value = values[3];
+        xPrice.value = values[4];
+      });
+
+    document.querySelector("#x-update-btn").onclick = function() {
+      if (xName.value == "") {
+        window.alert("필수 입력 항목이 비어 있습니다.");
+        return;
+      }
+
+
+    fetch(`/my1/update?name=${xName.value}&gram=${xGram.value}&kcal=${xKcal.value}&brand=${xBrand.value}&price=${xPrice.value}`)
+      .then(function(response) {
+      return response.text();
+      })
+      .then(function(text) {
+        console.log(text);
+        location.href = "index.html";
+      });
+  };
+
+  document.querySelector("#x-cancel-btn").onclick = function() {
+    window.location.href = "index.html";
+  };
+
+  document.querySelector("#x-delete-btn").onclick = function() {
+    fetch(`/my1/delete?name=${name}`)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(result) {
+        console.log(result);
+        location.href = "index.html";
+      });
+  };
+
+</script>
+</body>
+</html>
