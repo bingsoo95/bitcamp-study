@@ -25,13 +25,14 @@
 
   fetch("/contact/list")
     .then(function(response) {
-      return response.json();
+      return response.json(); // json 형식 문자열 => 자바스크립트 문자열 객체
     })
     .then(function(contacts) {
+      console.log(contacts);
       for (var contact of contacts) {
         var values = contact.split(",");
         var tr = document.createElement("tr");
-        tr.innerHTML = `<td>${values[0]}</td>
+        tr.innerHTML = `<td><a href="view.html?email=${values[1]}">${values[0]}</a></td>
         <td>${values[1]}</td>
         <td>${values[2]}</td>
         <td>${values[3]}</td>`;
