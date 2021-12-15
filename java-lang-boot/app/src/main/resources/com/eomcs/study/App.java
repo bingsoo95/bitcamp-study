@@ -14,7 +14,7 @@ public class App {
   }
   @RequestMapping("/hello")
   String home() {
-    return "Hello World!";
+    return "Hello, java-lang-boot!";
   }
 
 }
