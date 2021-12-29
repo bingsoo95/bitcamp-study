@@ -3,6 +3,7 @@ package com.eomcs.mylist;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController 
 public class BoardController {
 
@@ -13,6 +14,7 @@ public class BoardController {
 
   @RequestMapping("/board/add")
   public Object add(Board board) {
+
     ArrayList3.add(board);
     return ArrayList3.size;
   }
@@ -49,6 +51,6 @@ public class BoardController {
   }
 }
 
-
+ 
 
 
