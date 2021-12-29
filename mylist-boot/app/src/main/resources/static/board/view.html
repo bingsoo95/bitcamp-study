@@ -2,39 +2,22 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8">
-  <title>Board</title>
+  <title>게시글</title>
 </head>
 <body>
 
-<h1>게시글</h1>
-
-<table id="x-board-table" border="1" width= "50%">
-<thead style="height:40px;">
-  <tr>
-    <th>제목</th>
-    <td><input id="x-title" type="text" style="width:80%;margin-left:30px" readonly></td>
-  </tr>
-  <tr>
-    <th>작성일</th>
-    <td><input id="x-createdDate" type="date" style="width:80%;margin-left:30px"></td>
-  </tr>
-</thead>
-<tbody style="height:200px;">
-  <tr>
-    <th>내용</th>
-    <td><textarea id="x-content" type="text" style="width:80%;height:150px;margin-left:30px;"></textarea></td>
-  </tr>
-</tbody>
-</table>
+<h1>게시글 상세</h1>
 
 <form>
-  <button id="x-update-btn" type="button">변경</button>
-  <button id="x-delete-btn" type="button">삭제</button>
-  <button id="x-cancel-btn" type="button">취소</button>
+제목*: <input id="x-title" type="text"><br>
+내용*: <textarea id="x-content" cols="60" rows="10"></textarea><br>
+조회수: <span id="x-viewCount"></span><br>
+등록일: <span id="x-createdDate"></span><br>
+별표(*) 항목은 필수 입력입니다.<br>
+<button id="x-update-btn" type="button">변경</button>
+<button id="x-delete-btn" type="button">삭제</button>
+<button id="x-cancel-btn" type="button">취소</button>
 </form>
-
-
-
 
 <script type="text/javascript">
 
@@ -52,20 +35,21 @@
 
   // 2) 쿼리 스트링에서 email 값을 추출한다.
   var params = new URLSearchParams(qs);
-  var title = params.get("title");
+  var index = params.get("index");
 
-  if (title == null) {
-    alert("이메일 값이 없습니다.");
+  if (index == null) {
+    alert("게시물 번호가 없습니다.");
     throw "파라미터 오류!";
   }
-  console.log(title);
+  console.log(index);
 
   var xTitle = document.querySelector("#x-title");
   var xContent = document.querySelector("#x-content");
+  var xViewCount = document.querySelector("#x-viewCount");
   var xCreatedDate = document.querySelector("#x-createdDate");
 
   // 3) 서버에서 데이터 가져오기
-  fetch(`/board/get?title=${title}`)
+  fetch(`/board/get?index=${index}`)
     .then(function(response) {
       return response.json();
     })
@@ -73,44 +57,42 @@
       // 4) 연락처 상세 정보를 화면에 출력한다.
       xTitle.value = board.title;
       xContent.value = board.content;
-      xCreatedDate.value = board.createdDate;
+      xViewCount.innerHTML = board.viewCount;
+      xCreatedDate.innerHTML = board.createdDate;
     });
-    document.querySelector("#x-update-btn").onclick = function() {
-      if (xContent.value == "" || xCreatedDate.value == "") {
-        window.alert("필수 입력 항목이 비어 있습니다.");
-        return;
-      }
 
-      fetch(`/board/update?title=${xTitle.value}&content=${xContent.value}&createdDate=${xCreatedDate.value}`)
-        .then(function(response) {
-          return response.text();
-        })
-        .then(function(text) {
-          console.log(text);
-          location.href = "index.html";
-        });
-    };
+  document.querySelector("#x-update-btn").onclick = function() {
+    if (xTitle.value == "" || xContent.value == "") {
+      window.alert("필수 입력 항목이 비어 있습니다.");
+      return;
+    }
 
-    document.querySelector("#x-cancel-btn").onclick = function() {
-      window.location.href = "index.html";
-    };
+    fetch(`/board/update?index=${index}&title=${xTitle.value}&content=${xContent.value}`)
+      .then(function(response) {
+        return response.text();
+      })
+      .then(function(text) {
+        console.log(text);
+        location.href = "index.html";
+      });
+  };
 
-    document.querySelector("#x-delete-btn").onclick = function() {
-      fetch(`/board/delete?title=${title}`)
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(result) {
-          console.log(result);
-          location.href = "index.html";
-        });
+  document.querySelector("#x-cancel-btn").onclick = function() {
+    window.location.href = "index.html";
+  };
 
-    };
-
-
+  document.querySelector("#x-delete-btn").onclick = function() {
+    fetch(`/board/delete?index=${index}`)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(result) {
+        console.log(result);
+        location.href = "index.html";
+      });
+  };
 
 </script>
-
 
 </body>
 </html>
