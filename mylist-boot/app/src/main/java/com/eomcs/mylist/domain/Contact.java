@@ -1,4 +1,4 @@
-package com.eomcs.mylist;
+package com.eomcs.mylist.domain;
 
 public class Contact {
   String name;
@@ -43,5 +43,6 @@ public class Contact {
   public void setCompany(String company) {
     this.company = company;
   }
+
 
 }

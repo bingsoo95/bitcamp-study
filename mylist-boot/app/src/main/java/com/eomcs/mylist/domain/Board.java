@@ -1,4 +1,4 @@
-package com.eomcs.mylist;
+package com.eomcs.mylist.domain;
 
 public class Board {
   String title;
@@ -30,10 +30,10 @@ public class Board {
   public void setCreatedDate(java.sql.Date createdDate) {
     this.createdDate = createdDate;
   }
+
   @Override
   public String toString() {
     return "Board [title=" + title + ", content=" + content + ", viewCount=" + viewCount
         + ", createdDate=" + createdDate + "]";
   }
-
 }
