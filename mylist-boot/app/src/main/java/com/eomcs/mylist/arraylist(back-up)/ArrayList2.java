@@ -1,3 +1,4 @@
+/*
 package com.eomcs.mylist;
 
 public class ArrayList2 {
@@ -58,7 +59,7 @@ public class ArrayList2 {
     return old;
   }
 }
-
+ */
 
 
 

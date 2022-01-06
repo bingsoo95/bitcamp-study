@@ -1,3 +1,4 @@
+/*
 package com.eomcs.mylist;
 
 public class ArrayList {
@@ -97,3 +98,4 @@ public class ArrayList {
     return old;
   }
 }
+ */

@@ -3,14 +3,16 @@ package com.eomcs.mylist.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.eomcs.mylist.domain.Todo;
-import com.eomcs.mylist.utill.ArrayList;
-
+import com.eomcs.util.ArrayList;
 
 @RestController 
 public class TodoController {
 
-  // Todo 객체 목록을 저장할 메모리를 준비한다.
   ArrayList todoList = new ArrayList();
+
+  public TodoController() {
+    System.out.println("TodoController() 호출됨!");
+  }
 
   @RequestMapping("/todo/list")
   public Object list() {

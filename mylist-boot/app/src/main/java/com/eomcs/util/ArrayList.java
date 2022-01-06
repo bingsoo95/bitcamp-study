@@ -1,4 +1,4 @@
-package com.eomcs.mylist.utill;
+package com.eomcs.util;
 
 public class ArrayList {
 
@@ -11,7 +11,7 @@ public class ArrayList {
   // 즉 non-static 메서드로 정의해야 한다.
   // 그리고 메서드가 호출될 때 받은 인스턴스를 사용하려면 내장 변수 this를 이용해야 한다.
   public void add(Object obj) {
-    if (this.size == this.list.length) {
+    if (this.size == this.list.length) { 
       this.list = this.grow();
     }
     this.list[this.size++] = obj;
@@ -38,15 +38,15 @@ public class ArrayList {
   }
 
   public Object[] toArray() {
-    Object[] arr = new Object[this.size];
-    for (int i = 0; i < this.size; i++) {
-      arr[i] = this.list[i];
+    Object[] arr = new Object[this.size]; 
+    for (int i = 0; i < this.size; i++) { 
+      arr[i] = this.list[i]; 
     }
-    return arr;
+    return arr; 
   }
 
   public Object remove(int index) {
-    if (index < 0 || index >= this.size) { // 값이 저장된 위치가 무효한 인덱스라면
+    if (index < 0 || index >= this.size) { // 값이 저장된 위치가 무효한 인덱스라면 
       return null;
     }
     Object old = this.list[index];
@@ -58,7 +58,7 @@ public class ArrayList {
   }
 
   public Object set(int index, Object obj) {
-    if (index < 0 || index >= this.size) { // 값이 저장된 위치가 무효한 인덱스라면
+    if (index < 0 || index >= this.size) { // 값이 저장된 위치가 무효한 인덱스라면 
       return null;
     }
     Object old = this.list[index];
@@ -75,3 +75,13 @@ public class ArrayList {
   }
 
 }
+
+
+
+
+
+
+
+
+
+

@@ -4,18 +4,20 @@ import java.sql.Date;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.eomcs.mylist.domain.Board;
-import com.eomcs.mylist.utill.ArrayList;
+import com.eomcs.util.ArrayList;
 
-
-@RestController
+@RestController 
 public class BoardController {
 
-  // Board 객체 목록을 저장할 메모리를 준비한다.
   ArrayList boardList = new ArrayList();
+
+  public BoardController() {
+    System.out.println("BoardController() 호출됨!");
+  }
 
   @RequestMapping("/board/list")
   public Object list() {
-    return boardList.toArray();
+    return boardList.toArray(); 
   }
 
   @RequestMapping("/board/add")
@@ -59,3 +61,7 @@ public class BoardController {
     return boardList.remove(index) == null ? 0 : 1;
   }
 }
+
+
+
+
