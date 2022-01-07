@@ -10,8 +10,8 @@
 
 <form>
 제목*: <input id="x-title" type="text"><br>
-저자: <input id="x-author" type="text"><br>
-출판사: <input id="x-press" type="text"><br>
+저자*: <input id="x-author" type="text"><br>
+출판사*: <input id="x-press" type="text"><br>
 페이지 수: <input id="x-page" type="number"><br>
 가격: <input id="x-price" type="number"><br>
 읽은 날짜: <input id="x-readDate" type="date"><br>
@@ -31,25 +31,36 @@ var xPrice = document.querySelector("#x-price");
 var xReadDate = document.querySelector("#x-readDate");
 var xFeed = document.querySelector("#x-feed");
 
-  document.querySelector("#x-add-btn").onclick = function() {
-    if (xTitle.value == "" || xFeed.value == "") {
-      window.alert("필수 입력 항목이 비어 있습니다.");
-      return;
-    }
+document.querySelector("#x-add-btn").onclick = function() {
+  if (xTitle.value == "" ||
+      xAuthor.value == "" ||
+      xPress.value == "" ||
+      xFeed.value == "") {
+    window.alert("필수 입력 항목이 비어 있습니다.");
+    return;
+  }
 
-    fetch(`/book/add?title=${xTitle.value}&feed=${xFeed.value}&author=${xAuthor.value}&press=${xPress.value}&page=${xPage.value}&price=${xPrice.value}&readDate=${xReadDate.value}`)
-      .then(function(response) {
-        return response.text();
-      })
-      .then(function(text) {
-        console.log(text);
-        location.href = "index.html";
-      });
-  };
+  var qs = `title=${xTitle.value}&author=${xAuthor.value}&press=${xPress.value}`;
+  qs += `&page=${xPage.value}&price=${xPrice.value}&feed=${xFeed.value}`;
 
-  document.querySelector("#x-cancel-btn").onclick = function() {
-    window.location.href = "index.html";
-  };
+  // 독서일을 입력했을 때만 서버에 보낸다.
+  if (xReadDate.value != "") {
+    qs += `&readDate=${xReadDate.value}`;
+  }
+
+  fetch(`/book/add?${qs}`)
+    .then(function(response) {
+      return response.text();
+    })
+    .then(function(text) {
+      console.log(text);
+      location.href = "index.html";
+    });
+};
+
+document.querySelector("#x-cancel-btn").onclick = function() {
+  window.location.href = "index.html";
+};
 </script>
 
 </body>

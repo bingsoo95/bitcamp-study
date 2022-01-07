@@ -1,3 +1,4 @@
+/*
 package com.eomcs.mylist;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,3 +62,4 @@ public class MyContactController {
     return 0;
   }
 }
+ */
