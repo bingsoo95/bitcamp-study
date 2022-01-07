@@ -1,5 +1,6 @@
 package com.eomcs.mylist.controller;
 
+import java.io.FileWriter;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.eomcs.mylist.domain.Contact;
@@ -8,10 +9,12 @@ import com.eomcs.util.ArrayList;
 @RestController 
 public class ContactController {
 
-  // Contact 객체 목록을 저장할 메모리 준비
-  // => Object[] list = new Object[5];
-  // => int size = 0;
-  ArrayList contactList = new ArrayList();
+  ArrayList contactList;
+
+  public ContactController() {
+    contactList = new ArrayList();
+    System.out.println("ContactController() 호출됨!");
+  }
 
   @RequestMapping("/contact/list")
   public Object list() {
@@ -54,6 +57,20 @@ public class ContactController {
 
     contactList.remove(index);
     return 1;
+  }
+
+  @RequestMapping("/contact/save")
+  public Object save() throws Exception {
+    FileWriter out = new FileWriter("contacts.csv"); // 따로 경로를 지정하지 않으면 파일은 프로젝트 폴더에 생성된다.
+
+    Object[] arr = contactList.toArray();
+    for (Object obj : arr) {
+      Contact contact = (Contact) obj;
+      out.write(contact.toCsvString() + "\n");
+    }
+
+    out.close();
+    return 0;
   }
 
   int indexOf(String email) {
