@@ -6,7 +6,7 @@ import com.eomcs.io.FileWriter2;
 import com.eomcs.mylist.domain.Contact;
 import com.eomcs.util.ArrayList;
 
-@RestController 
+@RestController
 public class ContactController {
 
   ArrayList contactList;
@@ -27,7 +27,7 @@ public class ContactController {
 
   @RequestMapping("/contact/list")
   public Object list() {
-    return contactList.toArray(); 
+    return contactList.toArray();
   }
 
   @RequestMapping("/contact/add")
@@ -85,14 +85,10 @@ public class ContactController {
   int indexOf(String email) {
     for (int i = 0; i < contactList.size(); i++) {
       Contact contact =  (Contact) contactList.get(i);
-      if (contact.getEmail().equals(email)) { 
+      if (contact.getEmail().equals(email)) {
         return i;
       }
     }
     return -1;
   }
 }
-
-
-
-

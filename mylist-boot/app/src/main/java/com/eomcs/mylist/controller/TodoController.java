@@ -6,7 +6,7 @@ import com.eomcs.io.FileWriter2;
 import com.eomcs.mylist.domain.Todo;
 import com.eomcs.util.ArrayList;
 
-@RestController 
+@RestController
 public class TodoController {
 
   ArrayList todoList = new ArrayList();
@@ -17,7 +17,7 @@ public class TodoController {
 
     String line;
     while ((line = in.readLine()).length() != 0) { // 빈 줄을 리턴 받았으면 읽기를 종료한다.
-      todoList.add(Todo.valueOf(line)); 
+      todoList.add(Todo.valueOf(line));
     }
 
     in.close();
@@ -25,7 +25,7 @@ public class TodoController {
 
   @RequestMapping("/todo/list")
   public Object list() {
-    return todoList.toArray(); 
+    return todoList.toArray();
   }
 
   @RequestMapping("/todo/add")
@@ -80,7 +80,3 @@ public class TodoController {
     return arr.length;
   }
 }
-
-
-
-

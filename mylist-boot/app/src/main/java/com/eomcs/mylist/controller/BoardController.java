@@ -7,7 +7,7 @@ import com.eomcs.io.FileWriter2;
 import com.eomcs.mylist.domain.Board;
 import com.eomcs.util.ArrayList;
 
-@RestController 
+@RestController
 public class BoardController {
 
   ArrayList boardList = new ArrayList();
@@ -18,7 +18,7 @@ public class BoardController {
 
     String line;
     while ((line = in.readLine()).length() != 0) { // 빈 줄을 리턴 받았으면 읽기를 종료한다.
-      boardList.add(Board.valueOf(line)); 
+      boardList.add(Board.valueOf(line));
     }
 
     in.close();
@@ -26,7 +26,7 @@ public class BoardController {
 
   @RequestMapping("/board/list")
   public Object list() {
-    return boardList.toArray(); 
+    return boardList.toArray();
   }
 
   @RequestMapping("/board/add")
@@ -84,7 +84,3 @@ public class BoardController {
     return arr.length;
   }
 }
-
-
-
-

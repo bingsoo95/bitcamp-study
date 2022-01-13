@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eomcs.mylist.domain.Book;
 import com.eomcs.util.ArrayList;
 
-@RestController 
+@RestController
 public class BookController {
 
   ArrayList bookList = new ArrayList();
@@ -18,7 +18,7 @@ public class BookController {
 
     String line;
     while ((line = in.readLine()).length() != 0) { // 빈 줄을 리턴 받았으면 읽기를 종료한다.
-      bookList.add(Book.valueOf(line)); 
+      bookList.add(Book.valueOf(line));
     }
 
     in.close();
@@ -26,7 +26,7 @@ public class BookController {
 
   @RequestMapping("/book/list")
   public Object list() {
-    return bookList.toArray(); 
+    return bookList.toArray();
   }
 
   @RequestMapping("/book/add")
@@ -84,7 +84,3 @@ public class BookController {
     return arr.length;
   }
 }
-
-
-
-
