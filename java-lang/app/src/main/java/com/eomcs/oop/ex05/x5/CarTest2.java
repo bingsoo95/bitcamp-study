@@ -15,7 +15,7 @@ public class CarTest2 {
     Trailer trailer2 = new Trailer(truck);
     trailer2.start();
     trailer2.run();
-    trailer2.stop();
+    trailer2.stop(); //
   }
 
 }
