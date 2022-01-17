@@ -22,4 +22,4 @@ public class BlackBox extends Option {
     super.stop();
     System.out.println("녹화 종료!");
   }
-}//
+}
