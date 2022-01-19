@@ -1,12 +1,17 @@
 package com.eomcs.mylist.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.eomcs.io.FileWriter2;
 import com.eomcs.mylist.domain.Contact;
 import com.eomcs.util.ArrayList;
 
-@RestController
+@RestController 
 public class ContactController {
 
   ArrayList contactList;
@@ -15,19 +20,19 @@ public class ContactController {
     contactList = new ArrayList();
     System.out.println("ContactController() 호출됨!");
 
-    com.eomcs.io.FileReader2 in = new com.eomcs.io.FileReader2("contacts.csv");
+    try {
+      ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream("contacts.ser2")));
+      contactList = (ArrayList) in.readObject();
+      in.close();
 
-    String line;
-    while ((line = in.readLine()).length() != 0) { // 빈 줄을 리턴 받았으면 읽기를 종료한다.
-      contactList.add(Contact.valueOf(line)); // 파일에서 읽은 한 줄의 CSV 데이터로 객체를 만든 후 목록에 등록한다.
+    } catch (Exception e) {
+      System.out.println("연락처 데이터를 로딩하는 중에 오류 발생!");
     }
-
-    in.close();
   }
 
   @RequestMapping("/contact/list")
   public Object list() {
-    return contactList.toArray();
+    return contactList.toArray(); 
   }
 
   @RequestMapping("/contact/add")
@@ -70,25 +75,23 @@ public class ContactController {
 
   @RequestMapping("/contact/save")
   public Object save() throws Exception {
-    FileWriter2 out = new FileWriter2("contacts.csv"); // 따로 경로를 지정하지 않으면 파일은 프로젝트 폴더에 생성된다.
-
-    Object[] arr = contactList.toArray();
-    for (Object obj : arr) {
-      Contact contact = (Contact) obj;
-      out.println(contact.toCsvString());
-    }
-
+    ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("contacts.ser2")));
+    out.writeObject(contactList);
     out.close();
-    return arr.length;
+    return contactList.size();
   }
 
   int indexOf(String email) {
     for (int i = 0; i < contactList.size(); i++) {
       Contact contact =  (Contact) contactList.get(i);
-      if (contact.getEmail().equals(email)) {
+      if (contact.getEmail().equals(email)) { 
         return i;
       }
     }
     return -1;
   }
 }
+
+
+
+

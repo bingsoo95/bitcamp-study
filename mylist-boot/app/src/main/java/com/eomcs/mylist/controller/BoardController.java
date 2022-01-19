@@ -1,32 +1,52 @@
 package com.eomcs.mylist.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Date;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.eomcs.io.FileWriter2;
 import com.eomcs.mylist.domain.Board;
 import com.eomcs.util.ArrayList;
 
-@RestController
+@RestController 
 public class BoardController {
 
   ArrayList boardList = new ArrayList();
 
   public BoardController() throws Exception {
     System.out.println("BoardController() 호출됨!");
-    com.eomcs.io.FileReader2 in = new com.eomcs.io.FileReader2("boards.csv");
 
-    String line;
-    while ((line = in.readLine()).length() != 0) { // 빈 줄을 리턴 받았으면 읽기를 종료한다.
-      boardList.add(Board.valueOf(line));
+    try {
+      ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream("boards.ser2")));
+
+      // 1) 객체가 각각 따로 serialize 되었을 경우, 다음과 같이 객체 단위로 읽으면 되고,
+      //    while (true) {
+      //      try {
+      //        Board board = (Board) in.readObject();
+      //        boardList.add(board);
+      //
+      //      } catch (Exception e) {
+      //        break;
+      //      }
+      //    }
+
+      // 2) 목록이 통째로 serialize 되었을 경우, 한 번에 목록을 읽으면 된다.
+      boardList = (ArrayList) in.readObject(); // 단 기존의 생성한 ArrayList 객체는 버린다.
+
+      in.close();
+
+    } catch (Exception e) {
+      System.out.println("게시글 데이터 로딩 중 오류 발생!");
     }
-
-    in.close();
   }
 
   @RequestMapping("/board/list")
   public Object list() {
-    return boardList.toArray();
+    return boardList.toArray(); 
   }
 
   @RequestMapping("/board/add")
@@ -72,15 +92,22 @@ public class BoardController {
 
   @RequestMapping("/board/save")
   public Object save() throws Exception {
-    FileWriter2 out = new FileWriter2("boards.csv"); // 따로 경로를 지정하지 않으면 파일은 프로젝트 폴더에 생성된다.
+    ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("boards.ser2")));
 
-    Object[] arr = boardList.toArray();
-    for (Object obj : arr) {
-      Board board = (Board) obj;
-      out.println(board.toCsvString());
-    }
+    // 1) 다음과 같이 목록에 들어 있는 객체를 한 개씩 순차적으로 serialize 할 수도 있고,
+    //    Object[] arr = boardList.toArray();
+    //    for (Object obj : arr) {
+    //      out.writeObject(obj);
+    //    }
+
+    // 2) 다음과 같이 목록 자체를 serialize 할 수 도 있다.
+    out.writeObject(boardList);
 
     out.close();
-    return arr.length;
+    return boardList.size();
   }
 }
+
+
+
+

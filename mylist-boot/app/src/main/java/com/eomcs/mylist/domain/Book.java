@@ -2,7 +2,7 @@ package com.eomcs.mylist.domain;
 
 import java.sql.Date;
 
-public class Book {
+public class Book implements java.io.Serializable {
   String title;
   String author;
   String press;
@@ -10,8 +10,6 @@ public class Book {
   int price;
   Date readDate;
   String feed;
-  int viewCount;
-  java.sql.Date createdDate;
 
   public Book() {
     System.out.println("Book() 호출됨!");
@@ -26,10 +24,10 @@ public class Book {
     this.setPress(values[2]);
     this.setPage(Integer.valueOf(values[3]));
     this.setPrice(Integer.valueOf(values[4]));
-    this.setReadDate(Date.valueOf(values[5]));
+    if (!values[5].equals("null")) {
+      this.setReadDate(Date.valueOf(values[5]));
+    }
     this.setFeed(values[6]);
-    this.setViewCount(Integer.valueOf(values[7]));
-    this.setCreatedDate(Date.valueOf(values[8]));
   }
 
   // 적용기술
@@ -51,10 +49,10 @@ public class Book {
     book.setPress(values[2]);
     book.setPage(Integer.valueOf(values[3]));
     book.setPrice(Integer.valueOf(values[4]));
-    book.setReadDate(Date.valueOf(values[5]));
+    if (!values[5].equals("null")) {
+      book.setReadDate(Date.valueOf(values[5]));
+    }
     book.setFeed(values[6]);
-    book.setViewCount(Integer.valueOf(values[7]));
-    book.setCreatedDate(Date.valueOf(values[8]));
 
     return book;
   }
@@ -64,16 +62,14 @@ public class Book {
   // => GRASP의 Information Expert 패턴
   //    데이터를 가공하는 기능은 그 데이터를 갖고 있는 클래스에 둬야 한다.
   public String toCsvString() {
-    return String.format("%s,%s,%s,%d,%d,%s,%s,%s,%s", 
+    return String.format("%s,%s,%s,%d,%d,%s,%s", 
         this.getTitle(), 
         this.getAuthor(), 
         this.getPress(), 
         this.getPage(),
         this.getPrice(),
         this.getReadDate(),
-        this.getFeed(),
-        this.getViewCount(),
-        this.getCreatedDate());
+        this.getFeed());
   }
 
   public String getTitle() {
@@ -118,23 +114,6 @@ public class Book {
   public void setFeed(String feed) {
     this.feed = feed;
   }
-  public int getViewCount() {
-    return viewCount;
-  }
-  public void setViewCount(int viewCount) {
-    this.viewCount = viewCount;
-  }
-  public java.sql.Date getCreatedDate() {
-    return createdDate;
-  }
-  public void setCreatedDate(java.sql.Date createdDate) {
-    this.createdDate = createdDate;
-  }
 
-  @Override
-  public String toString() {
-    return "Book [title=" + title + ", author=" + author + ", press=" + press + ", page=" + page
-        + ", price=" + price + ", readDate=" + readDate + ", feed=" + feed + ", viewCount="
-        + viewCount + ", createdDate=" + createdDate + "]";
-  }
+
 }
