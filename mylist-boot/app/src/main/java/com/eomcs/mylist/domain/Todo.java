@@ -11,8 +11,8 @@ public class Todo implements java.io.Serializable {
   public Todo(String csvStr) {
     // 예) csvStr => "제목,완료여부"
 
-    String[] values = csvStr.split(","); 
-    this.setTitle(values[0]); 
+    String[] values = csvStr.split(",");
+    this.setTitle(values[0]);
     this.setDone(Boolean.valueOf(values[1]));
   }
 
@@ -30,19 +30,19 @@ public class Todo implements java.io.Serializable {
     String[] values = csvStr.split(",");
 
     Todo todo = new Todo();
-    todo.setTitle(values[0]); 
+    todo.setTitle(values[0]);
     todo.setDone(Boolean.valueOf(values[1]));
 
     return todo;
   }
 
   // 적용 기술
-  // => 인스턴스 메서드: 특정 인스턴스를 사용한다면 인스턴스 메서드로 만들라! 
+  // => 인스턴스 메서드: 특정 인스턴스를 사용한다면 인스턴스 메서드로 만들라!
   // => GRASP의 Information Expert 패턴
   //    데이터를 가공하는 기능은 그 데이터를 갖고 있는 클래스에 둬야 한다.
   public String toCsvString() {
-    return String.format("%s,%s", 
-        this.getTitle(), 
+    return String.format("%s,%s",
+        this.getTitle(),
         this.isDone());
   }
 

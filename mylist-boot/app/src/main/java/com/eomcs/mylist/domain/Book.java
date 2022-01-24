@@ -18,8 +18,8 @@ public class Book implements java.io.Serializable {
   public Book(String csvStr) {
     // 예) csvStr => "제목,저자,출판사,페이지,가격,독서일,소감"
 
-    String[] values = csvStr.split(","); 
-    this.setTitle(values[0]); 
+    String[] values = csvStr.split(",");
+    this.setTitle(values[0]);
     this.setAuthor(values[1]);
     this.setPress(values[2]);
     this.setPage(Integer.valueOf(values[3]));
@@ -44,7 +44,7 @@ public class Book implements java.io.Serializable {
     String[] values = csvStr.split(",");
 
     Book book = new Book();
-    book.setTitle(values[0]); 
+    book.setTitle(values[0]);
     book.setAuthor(values[1]);
     book.setPress(values[2]);
     book.setPage(Integer.valueOf(values[3]));
@@ -58,14 +58,14 @@ public class Book implements java.io.Serializable {
   }
 
   // 적용 기술
-  // => 인스턴스 메서드: 특정 인스턴스를 사용한다면 인스턴스 메서드로 만들라! 
+  // => 인스턴스 메서드: 특정 인스턴스를 사용한다면 인스턴스 메서드로 만들라!
   // => GRASP의 Information Expert 패턴
   //    데이터를 가공하는 기능은 그 데이터를 갖고 있는 클래스에 둬야 한다.
   public String toCsvString() {
-    return String.format("%s,%s,%s,%d,%d,%s,%s", 
-        this.getTitle(), 
-        this.getAuthor(), 
-        this.getPress(), 
+    return String.format("%s,%s,%s,%d,%d,%s,%s",
+        this.getTitle(),
+        this.getAuthor(),
+        this.getPress(),
         this.getPage(),
         this.getPrice(),
         this.getReadDate(),
