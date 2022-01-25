@@ -2,37 +2,23 @@ package com.eomcs.mylist.dao;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.sql.Date;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import com.eomcs.mylist.domain.Board;
 import com.eomcs.util.ArrayList;
 
-public class BinaryBoardDao implements BoardDao {
+//@Repository
+public class SerialBoardDao implements BoardDao {
 
-  String filename = "boards.bin";
+  String filename = "boards.ser";
   ArrayList boardList = new ArrayList(); // 변수 선언 = 변수를 만들라는 명령!
 
-  public BinaryBoardDao() {
+  public SerialBoardDao() {
     try {
-      DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(filename)));
-
-      // 저장된 데이터 개수를 읽어 온다.
-      int len = in.readInt();
-
-      // 게시글 개수만큼 읽는다.
-      for (int i = 0; i < len; i++) {
-        Board board = new Board();
-        board.setTitle(in.readUTF());
-        board.setContent(in.readUTF());
-        board.setViewCount(in.readInt());
-        board.setCreatedDate(Date.valueOf(in.readUTF()));
-
-        boardList.add(board);
-      }
-
+      ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(filename)));
+      boardList = (ArrayList) in.readObject();
       in.close();
     } catch (Exception e) {
       System.out.println("게시글 데이터 로딩 중 오류 발생!");
@@ -40,21 +26,9 @@ public class BinaryBoardDao implements BoardDao {
   }
 
   private void save() throws Exception {
-    DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(filename)));
-
-    // 게시글 개수를 먼저 출력한다.
-    out.writeInt(boardList.size());
-
-    // 게시글을 순차적으로 출력한다.
-    for (int i = 0; i < boardList.size(); i++) {
-      Board board = (Board) boardList.get(i);
-      out.writeUTF(board.getTitle());
-      out.writeUTF(board.getContent());
-      out.writeInt(board.getViewCount());
-      out.writeUTF(board.getCreatedDate().toString());
-    }
+    ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(filename)));
+    out.writeObject(boardList);
     out.flush();
-
     out.close();
   }
 
