@@ -2,6 +2,7 @@ package com.eomcs.app1;
 
 import java.io.PrintStream;
 import java.net.Socket;
+import java.net.URLDecoder;
 import java.util.Scanner;
 
 public class Worker extends Thread {
@@ -18,39 +19,50 @@ public class Worker extends Thread {
       Scanner in = new Scanner(socket.getInputStream());
       PrintStream out = new PrintStream(socket.getOutputStream());
 
-      String request = in.nextLine();
-      String[] values = request.split(" ");
+      // 1) HTTP 요청 데이터 읽기
+      String requestLine = in.nextLine();
+      System.out.println(requestLine);
 
-      if (values.length != 3) {
-        out.println("계산식이 올바르지 않습니다.");
+      // 나머지 데이터는 버린다.
+      while (true) {
+        String str = in.nextLine();
+        if (str.length() == 0) {
+          break;
+        }
+      }
 
-      } else {
-        int a = Integer.parseInt(values[0]);
-        String op = values[1];
-        int b = Integer.parseInt(values[2]);
-        int result = 0;
+      // 예) requestLine =  "GET /+/100/200 HTTP/1.1"
+      String requestUri = requestLine.split(" ")[1]; // 예) "/+/100/200"
+      String[] values = requestUri.split("/"); // 예) {"", "plus", "100", "200"}
+
+      if (values.length == 4) {
+        String op = URLDecoder.decode(values[1], "UTF-8"); // "%2b" -> "+", "-", "*", "%2f" -> "/"
+        int a = Integer.parseInt(values[2]); // "100"
+        int b = Integer.parseInt(values[3]); // "200"
+        System.out.printf("%s, %d, %d\n", op, a, b);
+
+        String response = null;
 
         switch (op) {
-          case "+": 
-            result = a + b;
-            out.printf("%d %s %d = %d\n", a, op, b, result);
+          case "+":
+            response = String.format("강사: %d + %d = %d", a, b, (a + b));
             break;
-          case "-": 
-            result = a - b; 
-            out.printf("%d %s %d = %d\n", a, op, b, result);
+          case "-":
+            response = String.format("강사: %d - %d = %d", a, b, (a - b));
             break;
-          case "/": 
-            //            for (int i = 0; i < 1000000000; i++) {
-            //              result = (int) (Math.random() * Math.random() * Math.sin(0.45));
-            //              result += (int) (Math.random() * Math.random() * Math.sin(0.45)) ;
-            //            }
-            Thread.sleep(20000);
-            result = a / b; 
-            out.printf("%d %s %d = %d\n", a, op, b, result);
-            break;  
-          default: 
-            out.println("지원하지 않는 연산자입니다.");
+          case "*":
+            response = String.format("강사: %d * %d = %d", a, b, (a * b));
+            break;
+          case "/":
+            response = String.format("강사: %d / %d = %d", a, b, (a / b));
+            break;
+          default:
+            response = "강사: 지원하지 않는 연산자입니다.";
         }
+        writeResponse(out, response);
+
+      } else {
+        writeResponse(out, "요청 형식이 올바르지 않습니다.");
       }
 
       socket.close();
@@ -60,11 +72,13 @@ public class Worker extends Thread {
       e.printStackTrace();
     }
   }
+
+  // HTTP 응답 데이터 보내기
+  private void writeResponse(PrintStream out, String messageBody) throws Exception {
+    out.println("HTTP/1.1 200 OK");
+    out.println("Content-Type: text/plain; charset=UTF-8");
+    out.println();
+    out.print(messageBody);
+    out.flush();
+  }
 }
-
-
-
-
-
-
-
