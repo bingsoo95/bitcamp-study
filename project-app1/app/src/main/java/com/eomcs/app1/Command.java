@@ -26,6 +26,6 @@ public class Command {
   }
 
   public int getParamSize() {
-    return this.params.size(); //
+    return this.params.size(); 
   }
 }
