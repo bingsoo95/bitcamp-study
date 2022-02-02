@@ -28,7 +28,7 @@ public class CommandHandler {
     } else {
       int v1 = command.getInt(0);
       int v2 = command.getInt(1);
-      System.out.printf("%d - %d = %d\n", v1, v2, (v1 - v2)); //
+      System.out.printf("%d - %d = %d\n", v1, v2, (v1 - v2)); 
     }
   }
 }
