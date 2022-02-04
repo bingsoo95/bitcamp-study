@@ -11,21 +11,21 @@ public class CalculateController {
     String response = null;
 
     switch (op) {
-      case "+": 
+      case "+":
         response = String.format("강사: %.1f + %.1f = %.2f", a, b, (a + b));
         break;
-      case "-": 
+      case "-":
         response = String.format("강사: %.1f - %.1f = %.2f", a, b, (a - b));
         break;
-      case "*": 
+      case "*":
         response = String.format("강사: %.1f * %.1f = %.2f", a, b, (a * b));
-        break;  
-      case "/": 
+        break;
+      case "/":
         response = String.format("강사: %.1f / %.1f = %.2f", a, b, (a / b));
         break;
-      default: 
+      default:
         response = "강사: 지원하지 않는 연산자입니다.";
     }
-    return response;
+    return response; //
   }
 }
