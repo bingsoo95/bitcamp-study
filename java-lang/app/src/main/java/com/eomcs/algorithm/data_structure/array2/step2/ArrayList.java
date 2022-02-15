@@ -39,7 +39,7 @@ public class ArrayList<itemType> {
     for (int i = 0; i < elementData.length; i++) {
       newArray[i] = elementData[i];
     }
-    elementData = newArray; //
+    elementData = newArray; 
      */
   }
 
