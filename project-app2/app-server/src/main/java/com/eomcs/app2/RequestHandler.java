@@ -10,7 +10,7 @@ public class RequestHandler extends Thread {
 
   Socket socket;
 
-  public RequestHandler (Socket socket) {
+  public RequestHandler(Socket socket) {
     this.socket = socket;
   }
 
@@ -19,6 +19,7 @@ public class RequestHandler extends Thread {
     try (Socket socket2 = socket;
         ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());) {
+
 
       System.out.println("클라이언트가 접속했습니다.");
 
@@ -74,6 +75,6 @@ public class RequestHandler extends Thread {
 
     } catch (Exception e) {
       System.out.println("클라이언트와 통신 중 오류 발생!");
-    } 
+    }
   }
 }

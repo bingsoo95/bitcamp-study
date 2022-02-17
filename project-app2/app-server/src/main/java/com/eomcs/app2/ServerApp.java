@@ -9,19 +9,17 @@ import com.eomcs.app2.vo.Score;
 
 public class ServerApp {
 
-  ScoreTable scoreHandler = new ScoreTable();
-
   public static void main(String[] args) {
     new ServerApp().service();
   }
 
   public void service() {
-    try (ServerSocket serverSocket = new ServerSocket(3306);) {
+    try (ServerSocket serverSocket = new ServerSocket(3336);) {
       System.out.println("서버 실행 중...");
 
       while (true) {
         new RequestHandler(serverSocket.accept()).start();
-      } // while(true)
+      } // while (true)
     } catch (Exception e) {
       System.out.println("서버 실행 오류!");
     }
@@ -33,7 +31,7 @@ public class ServerApp {
 
     Socket socket;
 
-    public RequestHandler (Socket socket) {
+    public RequestHandler(Socket socket) {
       this.socket = socket;
     }
 
@@ -42,6 +40,7 @@ public class ServerApp {
       try (Socket socket2 = socket;
           ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
           ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());) {
+
 
         System.out.println("클라이언트가 접속했습니다.");
 
@@ -97,10 +96,9 @@ public class ServerApp {
 
       } catch (Exception e) {
         System.out.println("클라이언트와 통신 중 오류 발생!");
-      } 
+      }
     }
   }
-
 }
 
 
