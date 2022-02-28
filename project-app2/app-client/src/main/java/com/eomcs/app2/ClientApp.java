@@ -58,5 +58,5 @@ public class ClientApp {
 
   private boolean checkQuit(String input) {
     return input.equals("quit") || input.equals("exit");
-  } //
+  }
 }
