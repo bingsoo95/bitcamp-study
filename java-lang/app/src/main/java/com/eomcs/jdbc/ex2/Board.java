@@ -1,72 +1,100 @@
-// DAO와 서비스 객체 사이에서 데이터를 실어나르는 용도로 사용한다.
-// => "DTO(Data Transfer Object)"라 부른다.
-// => "도메인 객체(domain)"라고도 부른다.
-// => "VO(Value Object)"라 부른다.
+// 데이터를 처리하는 코드를 별도의 클래스로 캡슐화시킨다.
+// => data 영속성(지속성)을 관리하는 클래스를 DAO(Data Access Object)라 부른다.
+// => data 영속성(지속성)
+//    - 데이터를 저장하고 유지하는 것.
+//    - "데이터 퍼시스턴스(persistence)"라 부른다.
 package com.eomcs.jdbc.ex2;
 
-import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-// 외부 저장소로 객체를 내보낼 수 있도록 serial 기능을 활성화시킨다.
-public class Board implements Serializable {
-  private static final long serialVersionUID = 1L;
+public class BoardDao {
+  public int delete(int no) throws Exception {
+    try (Connection con = DriverManager.getConnection(
+        "jdbc:mariadb://localhost:3306/studydb?user=study&password=1111");
+        Statement stmt = con.createStatement()) {
 
-  // DB 테이블의 컬럼 값을 저장할 인스턴스 변수를 준비한다.
-  // => 보통 컬럼이름은 DB 관례에 따라 약자로 기술한다.
-  // => 그러나 자바에서는 자바의 관례에 따라 변수명을 만들라!
-  //    DB 컬럼명과 같게 하지 말라!
-  int no;
-  String title;
-  String content;
-  Date registeredDate;
-  int viewCount;
+      // 첨부파일 삭제
+      stmt.executeUpdate("delete from x_board_file where board_id = " + no);
 
-  // 개발하는 동안 객체의 값을 확인할 수 있도록 toString()을 오버라이딩 한다.
-  @Override
-  public String toString() {
-    return "Board [no=" + no + ", title=" + title + ", content=" + content + ", registeredDate="
-        + registeredDate + ", viewCount=" + viewCount + "]";
+      // 게시글 삭제
+      return stmt.executeUpdate("delete from x_board where board_id=" + no);
+    }
   }
 
-  // 셋터와 겟터 생성
-  public int getNo() {
-    return no;
+  public List<Board> findAll() throws Exception {
+    try (Connection con = DriverManager.getConnection(
+        "jdbc:mariadb://localhost:3306/studydb?user=study&password=1111");
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("select * from x_board order by board_id desc")) {
+
+      ArrayList<Board> list = new ArrayList<>();
+      while (rs.next()) {
+        Board board = new Board();
+        board.setNo(rs.getInt("board_id"));
+        board.setTitle(rs.getString("title"));
+        board.setContent(rs.getString("contents"));
+        board.setRegisteredDate(rs.getDate("created_date"));
+        board.setViewCount(rs.getInt("view_count"));
+        list.add(board);
+      }
+      return list;
+    }
   }
 
-  public void setNo(int no) {
-    this.no = no;
+  public int insert(Board board) throws Exception {
+    try (Connection con = DriverManager.getConnection(
+        "jdbc:mariadb://localhost:3306/studydb?user=study&password=1111");
+        Statement stmt = con.createStatement();) {
+
+      String sql = String.format(
+          "insert into x_board(title,contents) values('%s','%s')", 
+          board.getTitle(),
+          board.getContent());
+
+      return stmt.executeUpdate(sql);
+    }
   }
 
-  public String getTitle() {
-    return title;
+  public int update(Board board) throws Exception {
+    try (Connection con = DriverManager.getConnection(
+        "jdbc:mariadb://localhost:3306/studydb?user=study&password=1111");
+        Statement stmt = con.createStatement()) {
+
+      String sql = String.format(
+          "update x_board set title='%s', contents='%s' where board_id=%d", 
+          board.getTitle(),
+          board.getContent(),
+          board.getNo());
+
+      return stmt.executeUpdate(sql);
+    }
   }
 
-  public void setTitle(String title) {
-    this.title = title;
-  }
+  public Board findBy(String no) throws Exception {
+    try (Connection con = DriverManager.getConnection(
+        "jdbc:mariadb://localhost:3306/studydb?user=study&password=1111");
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("select * from x_board where board_id = " + no)) {
 
-  public String getContent() {
-    return content;
-  }
+      if (rs.next()) {
+        Board board = new Board();
+        board.setNo(rs.getInt("board_id"));
+        board.setTitle(rs.getString("title"));
+        board.setContent(rs.getString("contents"));
+        board.setRegisteredDate(rs.getDate("created_date"));
+        board.setViewCount(rs.getInt("view_count"));
+        return board;
 
-  public void setContent(String content) {
-    this.content = content;
+      } else {
+        return null;
+      }
+    }
   }
-
-  public Date getRegisteredDate() {
-    return registeredDate;
-  }
-
-  public void setRegisteredDate(Date registeredDate) {
-    this.registeredDate = registeredDate;
-  }
-
-  public int getViewCount() {
-    return viewCount;
-  }
-
-  public void setViewCount(int viewCount) {
-    this.viewCount = viewCount;
-  }
-
 }
+
+
