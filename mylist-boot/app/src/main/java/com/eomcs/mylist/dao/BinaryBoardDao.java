@@ -31,7 +31,7 @@ public class BinaryBoardDao extends AbstractBoardDao {
         board.setViewCount(in.readInt());
         board.setCreatedDate(Date.valueOf(in.readUTF()));
 
-        boardList.add(board);
+        boardList.add(board); 
       }
 
       in.close();
@@ -60,3 +60,14 @@ public class BinaryBoardDao extends AbstractBoardDao {
     out.close();
   }
 }
+
+
+
+
+
+
+
+
+
+
+

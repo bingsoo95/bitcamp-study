@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eomcs.mylist.dao.BoardDao;
 import com.eomcs.mylist.domain.Board;
 
-@RestController
+@RestController 
 public class BoardController {
 
   // @Autowired
-  // - 필드 선언부에 이 애노테이션을 붙여서 표시해 두면,
-  //   Spring Boot가 BoardController 객체를 만들 때 BoardDao 구현체를 찾아 자동으로 주입한다.
+  // - 필드 선언부에 이 애노테이션을 붙여서 표시해 두면, 
+  //   Spring Boot가 BoardController 객체를 만들 때 BoardDao 구현체를 찾아 자동으로 주입한다. 
   //
   @Autowired
   BoardDao boardDao;
 
   @RequestMapping("/board/list")
   public Object list() {
-    return boardDao.findAll();
+    return boardDao.findAll(); 
   }
 
   @RequestMapping("/board/add")
@@ -58,3 +58,7 @@ public class BoardController {
     return boardDao.delete(index);
   }
 }
+
+
+
+
