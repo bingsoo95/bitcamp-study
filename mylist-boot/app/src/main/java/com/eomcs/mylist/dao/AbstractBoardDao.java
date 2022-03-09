@@ -80,7 +80,7 @@ public abstract class AbstractBoardDao implements BoardDao {
     board.setViewCount(board.getViewCount() + 1);
     save();
   }
-} //
+} 
 
 
 
