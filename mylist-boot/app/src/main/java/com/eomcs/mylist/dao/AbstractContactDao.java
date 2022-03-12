@@ -5,7 +5,7 @@ import com.eomcs.mylist.domain.Contact;
 
 public abstract class AbstractContactDao implements ContactDao {
 
-  protected ArrayList<Contact> contactList = new ArrayList<>(); 
+  protected ArrayList<Contact> contactList = new ArrayList<>();
 
   protected abstract void save() throws Exception;
 
@@ -58,7 +58,7 @@ public abstract class AbstractContactDao implements ContactDao {
   private int indexOf(String email) {
     for (int i = 0; i < contactList.size(); i++) {
       Contact contact =  contactList.get(i);
-      if (contact.getEmail().equals(email)) { 
+      if (contact.getEmail().equals(email)) {
         return i;
       }
     }
@@ -66,14 +66,4 @@ public abstract class AbstractContactDao implements ContactDao {
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
+//
