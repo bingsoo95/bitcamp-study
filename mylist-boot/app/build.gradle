@@ -13,6 +13,7 @@ repositories {
   mavenCentral()
 }
 
+
 dependencies {
   // MariaDB JDBC 드라이버
   implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.3'
