@@ -58,7 +58,7 @@
 
   <delete id="delete" parameterType="int">
     delete from ml_todo
-    where todo_no=#{no}
+    where todo_no=#{no} //
   </delete>
 
 </mapper>
