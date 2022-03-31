@@ -4,12 +4,14 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.eomcs.mylist.domain.Member;
 
-@Mapper  
+@Mapper
 public interface MemberDao {
 
   int insert(Member member);
 
   Member findByEmailAndPassword(@Param("email") String email, @Param("password") String password);
+
+  Member findByEmail(String email);
 
   //  List<Member> findAll();
   //
@@ -20,14 +22,3 @@ public interface MemberDao {
   //  int delete(int no);
 
 }
-
-
-
-
-
-
-
-
-
-
-
