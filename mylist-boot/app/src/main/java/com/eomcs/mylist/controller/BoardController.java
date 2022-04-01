@@ -76,7 +76,7 @@ public class BoardController {
     if (count == 1) {
       return new ResultMap().setStatus(SUCCESS);
     } else {
-      return new ResultMap().setStatus(FAIL).setData("게시글 번호가 유효하지 않거나 게시글 작성자가 아닙니다."); //
+      return new ResultMap().setStatus(FAIL).setData("게시글 번호가 유효하지 않거나 게시글 작성자가 아닙니다."); 
     }
   }
 }
