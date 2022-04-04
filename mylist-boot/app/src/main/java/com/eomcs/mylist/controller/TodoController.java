@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eomcs.mylist.domain.Todo;
 import com.eomcs.mylist.service.TodoService;
 
-@RestController 
+@RestController
 public class TodoController {
 
   @Autowired
@@ -34,11 +34,7 @@ public class TodoController {
 
   @RequestMapping("/todo/delete")
   public Object delete(int no) throws Exception {
-    return todoService.delete(no);
+    return todoService.delete(no); //
   }
 
 }
-
-
-
-
