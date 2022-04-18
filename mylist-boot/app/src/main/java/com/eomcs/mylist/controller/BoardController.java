@@ -17,7 +17,7 @@ public class BoardController {
 
   // log를 출력하는 도구 준비
   private static final Logger log = LoggerFactory.getLogger(BoardController.class);
-
+  /
   @Autowired
   BoardService boardService;
 
